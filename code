@@ -1,0 +1,39 @@
+import sys
+
+# function to encode a single letter
+def encode_letter(c, shift):
+    if not c.isalpha():
+        return ''
+    return chr((ord(c.upper()) + shift - 65) % 26 + 65)
+
+# function to encode a message
+def encode_message(message, shift):
+    encoded_message = ''
+    for c in message:
+        encoded_message += encode_letter(c, shift)
+    return encoded_message
+
+# main method
+if __name__ == '__main__':
+    # get the shift from the command line arguments
+    if len(sys.argv) < 2:
+        print('Please specify the shift as a command line argument.')
+        sys.exit()
+    try:
+        shift = int(sys.argv[1])
+    except ValueError:
+        print('Shift must be an integer.')
+        sys.exit()
+
+    # read in the message from stdin
+    message = input('Enter the message to be encoded: ').strip()
+
+    # convert message to all uppercase and encode each letter
+    encoded_message = encode_message(message.upper(), shift)
+
+    # print the encoded message in blocks of five letters, ten blocks per line
+    for i in range(0, len(encoded_message), 5):
+        if i % 50 == 0:
+            print()
+        print(encoded_message[i:i+5], end=' ')
+    print()
